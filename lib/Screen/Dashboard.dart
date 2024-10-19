@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:quiz/Service/getquestion.dart';
+import 'package:quiz/widget/bottom_nave.dart';
 
 final db = FirebaseAuth.instance;
 
@@ -12,21 +14,15 @@ class Homescreen extends StatefulWidget {
 
 class _HomescreenState extends State<Homescreen> {
   @override
+  void initState() {
+    super.initState();
+    getAllCollectionsExceptUsers();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              db.signOut();
-            },
-            icon: const Icon(Icons.output_rounded),
-          )
-        ],
-      ),
-      body: const Center(
-        child: Text("data"),
-      ),
+      bottomNavigationBar: BottomNave(),
     );
   }
 }
