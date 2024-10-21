@@ -8,15 +8,24 @@ import 'package:flutter/material.dart';
 final auth = FirebaseAuth.instance;
 
 class Authservice {
-  static void loginservice(context, String email, String password) {
+  static void loginservice(context, String email, String password) async {
     try {
-      auth.signInWithEmailAndPassword(email: email, password: password);
+      await auth.signInWithEmailAndPassword(email: email, password: password);
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Loged in ",
+          ),
+        ),
+      );
     } on FirebaseAuthException catch (error) {
       ScaffoldMessenger.of(context).clearSnackBars();
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            error.toString(),
+            error.message.toString(),
           ),
         ),
       );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:quiz/Screen/Adminscreen.dart';
+import 'package:quiz/Screen/Dashboard.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 
 class BottomNave extends StatefulWidget {
@@ -28,13 +29,14 @@ class _BottomNaveState extends State<BottomNave> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: PageView(
-            physics: NeverScrollableScrollPhysics(),
-            controller: pageController,
-            children: const <Widget>[
-              Center(child: Text("1")),
-              Center(child: Text("2")),
-              AdmitScreen()
-            ]),
+          physics: NeverScrollableScrollPhysics(),
+          controller: pageController,
+          children: const <Widget>[
+            Dashboard(),
+            Center(child: Text("2")),
+            AdmitScreen(),
+          ],
+        ),
         bottomNavigationBar: WaterDropNavBar(
           backgroundColor: navigationBarColor,
           onItemSelected: (int index) {

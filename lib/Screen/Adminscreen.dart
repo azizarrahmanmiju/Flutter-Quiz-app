@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz/Service/addquestion.dart';
 import 'package:quiz/widget/button/bluebutton.dart';
+import 'package:quiz/widget/dropdownbutton.dart';
 
 class AdmitScreen extends StatefulWidget {
   const AdmitScreen({super.key});
@@ -12,7 +13,8 @@ class AdmitScreen extends StatefulWidget {
 class _AdmitScreenState extends State<AdmitScreen> {
   final _formkey = GlobalKey<FormState>();
   bool isadmin = false;
-  String dropdownvalue = "java";
+  String? dropdownvalue = 'java';
+  List<String> value = ['java', 'c++', 'python', 'dart'];
 
   String? quation;
   String? Correctanswer;
@@ -26,6 +28,7 @@ class _AdmitScreenState extends State<AdmitScreen> {
   }
 
   final admintextcontroller = TextEditingController();
+  final valuecontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,39 +96,18 @@ class _AdmitScreenState extends State<AdmitScreen> {
                             ),
                           ),
                         ),
-                        const Spacer(),
-                        DropdownButton<String>(
-                          value: dropdownvalue,
-                          style: const TextStyle(
-                              color: Color.fromARGB(255, 0, 26, 255)),
-                          onChanged: (String? newValue) {
-                            if (newValue != null) {
-                              // Check for null
-                              setState(() {
-                                dropdownvalue =
-                                    newValue; // Update state with the new value
-                              });
-                            }
+                        Spacer(),
+                        dropdownbutton(
+                          value: value,
+                          ondropvalue: (value) {
+                            dropdownvalue = value;
                           },
-                          items: const [
-                            DropdownMenuItem<String>(
-                              value: 'java',
-                              child: Text('Java test'),
-                            ),
-                            DropdownMenuItem<String>(
-                              value: 'c++',
-                              child: Text('C++'),
-                            ),
-                            DropdownMenuItem<String>(
-                              value: 'python',
-                              child: Text('Python'),
-                            ),
-                            DropdownMenuItem<String>(
-                              value: 'dart',
-                              child: Text('Dart'),
-                            ),
-                          ],
                         ),
+                        // IconButton(
+                        //     onPressed: () {
+                        //       _addshowDialog(context);
+                        //     },
+                        //     icon: Icon(Icons.add_rounded))
                       ],
                     ),
                     Container(
@@ -262,14 +244,16 @@ class _AdmitScreenState extends State<AdmitScreen> {
     );
   }
 
-  void _showDialog(BuildContext context) {
+  void _showDialog(
+    BuildContext context,
+  ) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (
+        BuildContext context,
+      ) {
         return AlertDialog(
-          title: const Text(
-            'Enter Admin key',
-          ),
+          title: Text("Security key 😉"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -284,12 +268,60 @@ class _AdmitScreenState extends State<AdmitScreen> {
               onPressed: () {
                 if (admintextcontroller.text.isNotEmpty &&
                     admintextcontroller.text.contains("marmiju")) {
-                  Addquestion.addquestion(dropdownvalue, quation, Correctanswer,
-                      boption, coption, doptioin);
+                  Addquestion.addquestion(dropdownvalue as String, quation,
+                      Correctanswer, boption, coption, doptioin);
+
                   Navigator.pop(context);
+                  _formkey.currentState!.reset();
                 }
               },
               child: const Text("submit"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _addshowDialog(
+    BuildContext context,
+  ) {
+    showDialog(
+      context: context,
+      builder: (
+        BuildContext context,
+      ) {
+        return AlertDialog(
+          title: const Text("others -temporary"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: valuecontroller,
+                decoration: const InputDecoration(hintText: "add new"),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                if (valuecontroller.text.isEmpty &&
+                    value.contains(valuecontroller.text)) {
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Value Is already Added"),
+                    ),
+                  );
+                  Navigator.pop(context);
+                  return;
+                }
+                setState(() {
+                  value.add(valuecontroller.text);
+                });
+                Navigator.pop(context);
+              },
+              child: const Text("add"),
             ),
           ],
         );

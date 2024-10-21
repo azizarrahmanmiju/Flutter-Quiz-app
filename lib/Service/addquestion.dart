@@ -5,7 +5,7 @@ final db = FirebaseFirestore.instance;
 
 class Addquestion {
   static Future<void> addquestion(
-      type, question, correctoption, boption, coption, doption) async {
+      String type, question, correctoption, boption, coption, doption) async {
     await db.collection(type).add({
       "question": question,
       "correctoption": correctoption,
@@ -13,5 +13,6 @@ class Addquestion {
       "coption": coption,
       "doption": doption,
     });
+    print('Question added');
   }
 }
